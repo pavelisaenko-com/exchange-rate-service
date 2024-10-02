@@ -11,7 +11,7 @@ public class ServiceScheduler {
 //    private static final String CRON = "0 * * * * *";
 
 
-    @Scheduled(fixedRate = 5160)    // cron = CRON  21600000
+    @Scheduled(fixedRate = 21600000)    // cron = CRON
     public void parseAndExport(){
         Parser parser = new RSHBParser();
         Exporter exporter = new CSVExporter();
