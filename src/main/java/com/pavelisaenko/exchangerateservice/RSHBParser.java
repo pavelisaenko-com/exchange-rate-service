@@ -12,19 +12,17 @@ import java.util.ArrayList;
 public class RSHBParser implements Parser{
     private Document document;
 
-    public RSHBParser() {
+    //надо привести парсинг страницы к порядку  1) получение по-отдельности блоков <div> от каждой карточки
+    //                                          2) выделение из каждого блока элементов:
+    //                                             количество и цена или нет в наличии
+    public ArrayList<Item> parse(){
 
         try {
             document = Jsoup.connect("https://coins.rshb.ru/ingots").get();
         } catch (IOException e) {
             System.out.printf("Jsoup connection error: %s", e);
         }
-    }
 
-    //надо привести парсинг страницы к порядку  1) получение по-отдельности блоков <div> от каждой карточки
-    //                                          2) выделение из каждого блока элементов:
-    //                                             количество и цена или нет в наличии
-    public ArrayList<Item> parse(){
         Elements items = document.select("div.product-layout");
         ArrayList<Item> itemsList = new ArrayList<>();
         Item temp;
@@ -34,7 +32,7 @@ public class RSHBParser implements Parser{
         for (int i = 0; i < items.size(); i++){
             temp = new Item( quantityAndType.get(i * 2).text(),
                     quantityAndType.get(i * 2 + 1).text(),
-                    items.select("div.price-box>span").get(i).text());
+                    items.select("div.price-box>span").get(i).text(), "RSHB");
             itemsList.add(temp);
         }
 
